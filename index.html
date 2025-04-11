@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RideFix — Запчасти для BRP</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background-color: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background: #222;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+    }
+    input, select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #eee;
+      margin-top: 50px;
+    }
+    .models {
+      margin: 20px 0;
+    }
+    .whatsapp-icon, .telegram-icon {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      margin-left: 5px;
+    }
+    .reviews, .why {
+      margin-top: 40px;
+    }
+    .review {
+      background: #f0f0f0;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 24px;
+      }
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>RideFix</h1>
+    <p>Поиск и заказ запчастей на технику BRP</p>
+  </header>
+
+  <nav>
+    <a href="#catalog">Каталог</a>
+    <a href="#order">Заказать</a>
+    <a href="#why">Почему мы</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+
+  <div class="container" id="catalog">
+    <h2>Выберите технику BRP</h2>
+    <div class="models">
+      <select>
+        <option>Sea-Doo (гидроциклы)</option>
+        <option>Ski-Doo (снегоходы)</option>
+        <option>Can-Am (квадроциклы)</option>
+        <option>Lynx (снегоходы)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="container" id="order">
+    <h2>Найди нужную запчасть</h2>
+    <form action="https://formspree.io/f/mldjaajn" method="POST">
+      <input type="text" name="part" placeholder="Введите модель, год или артикул детали" required />
+      <input type="text" name="name" placeholder="Имя" required />
+      <input type="text" name="phone" placeholder="Телефон / WhatsApp" required />
+      <button type="submit">Оставить заявку</button>
+    </form>
+  </div>
+
+  <div class="container reviews">
+    <h2>Отзывы клиентов</h2>
+    <div class="review">Быстро нашли редкую запчасть на Can-Am, отправили на следующий день! — Айдос</div>
+    <div class="review">Отличный сервис, консультанты помогли с подбором детали. — Виктория</div>
+  </div>
+
+  <div class="container why" id="why">
+    <h2>Почему выбирают нас</h2>
+    <ul>
+      <li>Работаем с оригинальными и аналоговыми запчастями BRP</li>
+      <li>Быстрый отклик и помощь в подборе</li>
+      <li>Доставка по всему Казахстану</li>
+      <li>Консультация по WhatsApp и Telegram</li>
+    </ul>
+  </div>
+
+  <footer id="contacts">
+    <p>Связь: ridefixkz@gmail.com</p>
+    <p>
+      WhatsApp: +7 777 123 4567
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="whatsapp-icon" />
+      Telegram: @ridefix_bot
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="telegram-icon" />
+    </p>
+  </footer>
+</body>
+</html>
