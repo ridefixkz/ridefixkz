@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RideFix — Каталог Can-Am Outlander 2021</title>
+  <title>RideFix — Каталог запчастей</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #f8f8f8; color: #333; }
     header { background: #111; color: white; text-align: center; padding: 20px; }
     .container { max-width: 1000px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; }
+    select, button { padding: 10px; font-size: 16px; margin: 10px 0; width: 100%; box-sizing: border-box; }
     h2 { color: #007bff; }
     .categories { display: flex; flex-wrap: wrap; gap: 10px; }
     .cat-card {
@@ -24,81 +25,130 @@
     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
     th { background: #007bff; color: white; }
-    button {
-      padding: 6px 12px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover { background: #0056b3; }
-    @media(max-width: 600px) {
-      .categories { flex-direction: column; }
-    }
+    button.action { background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; padding: 6px 12px; }
+    button.action:hover { background: #0056b3; }
+    @media(max-width: 600px) { .categories { flex-direction: column; } }
   </style>
 </head>
 <body>
   <header>
-    <h1>RideFix — Can-Am Outlander 2021</h1>
-    <p>Выберите раздел, чтобы просмотреть список запчастей</p>
+    <h1>RideFix — Каталог запчастей</h1>
+    <p>Выберите технику, модель и категорию</p>
   </header>
 
   <div class="container">
-    <h2>Категории</h2>
-    <div class="categories">
-      <div class="cat-card" onclick="showParts('engine')">Двигатель</div>
-      <div class="cat-card" onclick="showParts('transmission')">Трансмиссия</div>
-      <div class="cat-card" onclick="showParts('suspension')">Подвеска</div>
-      <div class="cat-card" onclick="showParts('electrical')">Электрика</div>
-      <div class="cat-card" onclick="showParts('cooling')">Охлаждение</div>
-    </div>
+    <select id="brand" onchange="updateModels()">
+      <option value="">Выберите технику</option>
+      <option value="Sea-Doo">Sea-Doo</option>
+      <option value="Can-Am">Can-Am</option>
+      <option value="Ski-Doo">Ski-Doo</option>
+      <option value="Lynx">Lynx</option>
+    </select>
 
+    <select id="model" onchange="updateYears()">
+      <option value="">Выберите модель</option>
+    </select>
+
+    <select id="year">
+      <option value="">Выберите год</option>
+    </select>
+
+    <div id="categories" class="categories"></div>
     <div id="parts-table"></div>
   </div>
 
   <script>
-    const parts = {
-      engine: [
-        { name: "Поршень", code: "420296188" },
-        { name: "Клапан впускной", code: "420254125" },
-        { name: "Цилиндр", code: "420685790" }
-      ],
-      transmission: [
-        { name: "Ремень вариатора", code: "417300383" },
-        { name: "Планетарный редуктор", code: "703500847" }
-      ],
-      suspension: [
-        { name: "Рычаг передний левый", code: "706202228" },
-        { name: "Шаровая опора", code: "706202045" }
-      ],
-      electrical: [
-        { name: "Аккумулятор", code: "515176151" },
-        { name: "Реле стартера", code: "710001686" }
-      ],
-      cooling: [
-        { name: "Радиатор", code: "709200400" },
-        { name: "Крыльчатка вентилятора", code: "709200486" }
-      ]
+    const data = {
+      "Sea-Doo": {
+        "Spark": ["2022", "2023"],
+        "GTX": ["2021", "2022"]
+      },
+      "Can-Am": {
+        "Outlander": ["2021", "2022"],
+        "Maverick": ["2021", "2023"]
+      },
+      "Ski-Doo": {
+        "Summit": ["2023"],
+        "Renegade": ["2022"]
+      },
+      "Lynx": {
+        "Boondocker": ["2022"],
+        "Xtrim": ["2023"]
+      }
     };
 
+    const parts = {
+      engine: [{ name: "Поршень", code: "420296188" }, { name: "Клапан", code: "420254125" }],
+      transmission: [{ name: "Ремень вариатора", code: "417300383" }],
+      suspension: [{ name: "Шаровая опора", code: "706202045" }],
+      electrical: [{ name: "Реле стартера", code: "710001686" }],
+      cooling: [{ name: "Радиатор", code: "709200400" }]
+    };
+
+    const categoryLabels = {
+      engine: "Двигатель",
+      transmission: "Трансмиссия",
+      suspension: "Подвеска",
+      electrical: "Электрика",
+      cooling: "Охлаждение"
+    };
+
+    function updateModels() {
+      const brand = document.getElementById("brand").value;
+      const modelSelect = document.getElementById("model");
+      modelSelect.innerHTML = '<option value="">Выберите модель</option>';
+      if (data[brand]) {
+        for (let model in data[brand]) {
+          let opt = document.createElement("option");
+          opt.value = model;
+          opt.text = model;
+          modelSelect.appendChild(opt);
+        }
+      }
+      updateYears(); // сброс годов
+    }
+
+    function updateYears() {
+      const brand = document.getElementById("brand").value;
+      const model = document.getElementById("model").value;
+      const yearSelect = document.getElementById("year");
+      yearSelect.innerHTML = '<option value="">Выберите год</option>';
+      if (data[brand] && data[brand][model]) {
+        data[brand][model].forEach(y => {
+          let opt = document.createElement("option");
+          opt.value = y;
+          opt.text = y;
+          yearSelect.appendChild(opt);
+        });
+      }
+      showCategories();
+    }
+
+    function showCategories() {
+      const categoriesDiv = document.getElementById("categories");
+      categoriesDiv.innerHTML = "";
+      for (let cat in categoryLabels) {
+        const div = document.createElement("div");
+        div.className = "cat-card";
+        div.innerText = categoryLabels[cat];
+        div.onclick = () => showParts(cat);
+        categoriesDiv.appendChild(div);
+      }
+      document.getElementById("parts-table").innerHTML = "";
+    }
+
     function showParts(category) {
-      const tableArea = document.getElementById("parts-table");
       const items = parts[category] || [];
       let html = "<h2>Список запчастей</h2><table><tr><th>Наименование</th><th>Артикул</th><th></th></tr>";
       items.forEach(item => {
-        html += `<tr><td>${item.name}</td><td>${item.code}</td><td><button onclick="order('${item.name}', '${item.code}')">Оставить заявку</button></td></tr>`;
+        html += `<tr><td>${item.name}</td><td>${item.code}</td><td><button class='action' onclick="order('${item.name}', '${item.code}')">Оставить заявку</button></td></tr>`;
       });
       html += "</table>";
-      tableArea.innerHTML = html;
+      document.getElementById("parts-table").innerHTML = html;
     }
 
     function order(name, code) {
-      const url = `https://formspree.io/f/mldjaajn`;
-      const message = `Хочу заказать: ${name} (артикул: ${code})`;
-      alert("Заявка:
-" + message + "\n(форма пока отправляется через обычную форму RideFix)");
-      // Можно здесь открыть модальное окно с формой или переслать данные через JS
+      alert("Заявка на: " + name + " (код: " + code + ")");
     }
   </script>
 </body>
